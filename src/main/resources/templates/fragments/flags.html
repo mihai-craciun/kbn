@@ -1,0 +1,32 @@
+<!-- Feature flag -->
+<span th:fragment="feature" class="badge badge-green" data-toggle="tooltip" data-placement="bottom" title="Feature">
+    <span class="fa fa-star"></span>
+</span>
+<!-- Bug flag -->
+<span th:fragment="bug" class="badge badge-red" data-toggle="tooltip" data-placement="bottom" title="Bug">
+    <span class="fa fa-bug"></span>
+</span>
+<!-- Priority flags -->
+<div th:fragment="priority (value)" class="mr-1 ml-1">
+    <th:block th:switch="${value}">
+    <span th:case="${1}" class="badge badge-red" data-toggle="tooltip" data-placement="bottom" title="1 - Highest Priority">
+        <span class="fas fa-arrow-alt-circle-up"></span>
+    </span>
+    <span th:case="${2}" class="badge badge-orange" data-toggle="tooltip" data-placement="bottom" title="2 - High Priority">
+        <span class="far fa-arrow-alt-circle-up"></span>
+    </span>
+    <span th:case="${3}" class="badge badge-yellow" data-toggle="tooltip" data-placement="bottom" title="3 - Regular Priority">
+        <span class="fas fa-arrow-alt-circle-up"></span>
+    </span>
+    <span th:case="${4}" class="badge badge-lightgreen" data-toggle="tooltip" data-placement="bottom" title="4 - Low Priority">
+        <span class="fas fa-long-arrow-alt-down"></span>
+    </span>
+    <span th:case="${5}" class="badge badge-green" data-toggle="tooltip" data-placement="bottom" title="5 - Lowest Priority">
+        <span class="fas fa-arrow-alt-circle-down"></span>
+    </span>
+    </th:block>
+</div>
+<!-- Story points -->
+<div th:fragment="story_points (value)" data-toggle="tooltip" data-placement="bottom" th:data-title="${value} + ' Story points'">
+    <span class="badge badge-secondary text-right" th:text="${value}"></span>
+</div>

@@ -10,5 +10,85 @@
         <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+        <script>
+            $(document).ready(function(){
+                $('[data-toggle="tooltip"]').tooltip();   
+            });
+        </script>
+        <style>
+            .bg-gray {
+                background-color: #dbdbdb;
+            }
+
+            .cursor-pointer {
+                cursor: pointer;
+            }
+
+            .fill-height {
+                height: 100% !important;
+            }
+
+            .badge-red {
+                background-color: #f54242;
+                color: white;
+            }
+
+            .badge-orange {
+                background-color: #eb9234;
+                color: white;
+            }
+
+            .badge-yellow {
+                background-color: #ffed26;
+                color: white;
+            }
+
+            .badge-lightgreen {
+                background-color: #bae61c;
+                color: white;
+            }
+
+            .badge-green {
+                background-color: #33b56b;
+                color: white;
+            }
+
+            .col-xs-5ths,
+            .col-sm-5ths,
+            .col-md-5ths,
+            .col-lg-5ths {
+                position: relative;
+                min-height: 1px;
+                padding-right: 15px;
+                padding-left: 15px;
+            }
+
+            .col-xs-5ths {
+                width: 20%;
+                float: left;
+            }
+
+            @media (min-width: 768px) {
+                .col-sm-5ths {
+                    width: 20%;
+                    float: left;
+                }
+            }
+
+            @media (min-width: 992px) {
+                .col-md-5ths {
+                    width: 20%;
+                    float: left;
+                }
+            }
+
+            @media (min-width: 1200px) {
+                .col-lg-5ths {
+                    width: 20%;
+                    float: left;
+                }
+            }
+        </style>
     </head>
 </html>

@@ -1,72 +1,151 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head th:insert="fragments/cssjs"> </head>
+    <head th:insert="fragments/cssjs.html"> </head>
     <body>
-        <div th:insert="fragments/navbar"></div>
-        <div class="container">
-            <div class="card-deck mb-3 text-center">
-                <div class="card mb-4 box-shadow">
-                    <div class="card-header">
-                        <h4 class="my-0 font-weight-normal">Free</h4>
-                    </div>
-                    <div class="card-body">
-                        <h1 class="card-title pricing-card-title">
-                            $0 <small class="text-muted">/ mo</small>
-                        </h1>
-                        <ul class="list-unstyled mt-3 mb-4">
-                            <li>10 users included</li>
-                            <li>2 GB of storage</li>
-                            <li>Email support</li>
-                            <li>Help center access</li>
-                        </ul>
-                        <button
-                            type="button"
-                            class="btn btn-lg btn-block btn-outline-primary"
-                            >
-                        Sign up for free
-                        </button>
+        <div th:insert="fragments/navbar.html"></div>
+        <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+            <h1 class="display-4">KBN Project</h1>
+            <p class="lead">
+                Develop a kanban-like platform for self usage
+            </p>
+        </div>
+        <div class="container col-md-10 text-center mr-auto d-flex justify-content-center">
+            <div class="row col-md-12">
+                <div class="column col-md-5ths p-1">
+                    <div class="bg-gray rounded fill-height">
+                        <div class="p-3">
+                            <span>To Do</span>
+                        </div>
+                        <div draggable="true" class="card mb-2 box-shadow m-1 cursor-pointer">
+                            <div class="card-body">
+                                <span>Implement the flags functionalities</span>
+                                <div>
+                                    <div class="float-left d-flex">
+                                        <span th:insert="fragments/flags :: feature"></span>
+                                        <span th:insert="fragments/flags :: priority(${2})"></span>
+                                    </div>
+                                    <div class="float-right">
+                                        <span th:insert="fragments/flags :: story_points(${2})"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div draggable="true" class="card mb-2 box-shadow m-1 cursor-pointer">
+                            <div class="card-body">
+                                <span>Fix the spacing issue between cards</span>
+                                <div>
+                                    <div class="float-left d-flex">
+                                        <span th:insert="fragments/flags :: bug"></span>
+                                        <span th:insert="fragments/flags :: priority(${4})"></span>
+                                    </div>
+                                    <div class="float-right">
+                                        <span th:insert="fragments/flags :: story_points(${5})"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="card mb-4 box-shadow">
-                    <div class="card-header">
-                        <h4 class="my-0 font-weight-normal">Pro</h4>
-                    </div>
-                    <div class="card-body">
-                        <h1 class="card-title pricing-card-title">
-                            $15 <small class="text-muted">/ mo</small>
-                        </h1>
-                        <ul class="list-unstyled mt-3 mb-4">
-                            <li>20 users included</li>
-                            <li>10 GB of storage</li>
-                            <li>Priority email support</li>
-                            <li>Help center access</li>
-                        </ul>
-                        <button type="button" class="btn btn-lg btn-block btn-primary">
-                        Get started
-                        </button>
+                <div class="column col-md-5ths p-1">
+                    <div class="bg-gray rounded fill-height">
+                        <div class="p-3">
+                            <span>In Progress</span>
+                        </div>
+                        <div draggable="true" class="card mb-2 box-shadow m-1 cursor-pointer">
+                            <div class="card-body">
+                                <span>Implementing the Jira-like frontend of the application</span>
+                                <div>
+                                    <div class="float-left d-flex">
+                                        <span th:insert="fragments/flags :: feature"></span>
+                                        <span th:insert="fragments/flags :: priority(${1})"></span>
+                                    </div>
+                                    <div class="float-right">
+                                        <span th:insert="fragments/flags :: story_points(${13})"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="card mb-4 box-shadow">
-                    <div class="card-header">
-                        <h4 class="my-0 font-weight-normal">Enterprise</h4>
+                <div class="column col-md-5ths p-1">
+                    <div class="bg-gray rounded fill-height">
+                        <div class="p-3">
+                            <span>In Review</span>
+                        </div>
                     </div>
-                    <div class="card-body">
-                        <h1 class="card-title pricing-card-title">
-                            $29 <small class="text-muted">/ mo</small>
-                        </h1>
-                        <ul class="list-unstyled mt-3 mb-4">
-                            <li>30 users included</li>
-                            <li>15 GB of storage</li>
-                            <li>Phone and email support</li>
-                            <li>Help center access</li>
-                        </ul>
-                        <button type="button" class="btn btn-lg btn-block btn-primary">
-                        Contact us
-                        </button>
+                </div>
+                <div class="column col-md-5ths p-1">
+                    <div class="bg-gray rounded fill-height">
+                        <div class="p-3">
+                            <span>In Test</span>
+                        </div>
+                        <div draggable="true" class="card mb-2 box-shadow m-1 cursor-pointer">
+                            <div class="card-body">
+                                <span>Write the initial API</span>
+                                <div>
+                                    <div class="float-left d-flex">
+                                        <span th:insert="fragments/flags :: feature"></span>
+                                        <span th:insert="fragments/flags :: priority(${2})"></span>
+                                    </div>
+                                    <div class="float-right">
+                                        <span th:insert="fragments/flags :: story_points(${3})"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div draggable="true" class="card mb-2 box-shadow m-1 cursor-pointer">
+                            <div class="card-body">
+                                <span>Enable default authentication in the platform</span>
+                                <div>
+                                    <div class="float-left d-flex">
+                                        <span th:insert="fragments/flags :: feature"></span>
+                                        <span th:insert="fragments/flags :: priority(${5})"></span>
+                                    </div>
+                                    <div class="float-right">
+                                        <span th:insert="fragments/flags :: story_points(${2})"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="column col-md-5ths p-1">
+                    <div class="bg-gray rounded fill-height">
+                        <div class="p-3">
+                            <span>Closed</span>
+                        </div>
+                        <div draggable="true" class="card mb-2 box-shadow m-1 cursor-pointer">
+                            <div class="card-body">
+                                <span> Choose a title for the app</span>
+                                <div>
+                                    <div class="float-left d-flex">
+                                        <span th:insert="fragments/flags :: feature"></span>
+                                        <span th:insert="fragments/flags :: priority(${4})"></span>
+                                    </div>
+                                    <div class="float-right">
+                                        <span th:insert="fragments/flags :: story_points(${8})"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div draggable="true" class="card mb-2 box-shadow m-1 cursor-pointer">
+                            <div class="card-body">
+                                <span>Fix the spacing issue between cards</span>
+                                <div>
+                                    <div class="float-left d-flex">
+                                        <span th:insert="fragments/flags :: bug"></span>
+                                        <span th:insert="fragments/flags :: priority(${4})"></span>
+                                    </div>
+                                    <div class="float-right">
+                                        <span th:insert="fragments/flags :: story_points(${5})"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <footer th:include="fragments/footer"></footer>
         </div>
+        <footer th:include="fragments/footer"></footer>
     </body>
 </html>
