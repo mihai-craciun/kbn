@@ -2,15 +2,19 @@
 <!doctype html>
 <html lang="en">
     <body>
-        <div th:fragment="navbar" class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
-            <h5 class="my-0 mr-md-auto font-weight-normal" th:text="${app_name}"></h5>
+        <div th:fragment="navbar" class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 border-bottom box-shadow navbar-light" style="background-color: #a8ffe5">
+            <h5 class="my-0 mr-md-auto font-weight-normal" th:text="${@environment.getProperty('app.name')}"></h5>
             <nav class="my-2 my-md-0 mr-md-3">
-                <a class="p-2 text-dark" href="#"><span class="fas fa-plus"></span> New Project</a>
-                <a class="p-2 text-dark" href="#">Projects</a>
+                <a class="p-2 text-dark" sec:authorize="isAuthenticated()" href="@{/projects/create}"><span class="fas fa-plus"></span> New Project</a>
+                <a class="p-2 text-dark" sec:authorize="isAuthenticated()" href="@{/projects}">Projects</a>
             </nav>
-            <a class="btn btn-outline-info mr-2" sec:authorize="isAnonymous()" href="#">Sign up</a>
-            <a class="btn btn-outline-primary mr-2" sec:authorize="isAnonymous()" href="#">Log in</a>
-            <a class="p2 text-dark" sec:authentication="name"></a>
+            <a class="btn btn-outline-info mr-2" sec:authorize="isAnonymous()" th:href="@{/register}">Sign up</a>
+            <a class="btn btn-outline-info mr-2" sec:authorize="isAnonymous()" th:href="@{/login}">Log in</a>
+            <a class="p2 text-dark" sec:authorize="isAuthenticated()" sec:authentication="name"></a>
+            <a href="javascript: document.logoutForm.submit()" sec:authorize="isAuthenticated()"  class="btn btn-outline-info ml-2"> Logout</a>
+                <form name="logoutForm" th:action="@{/logout}" method="post" th:hidden="true">
+                    <input hidden type="submit" value="Sign Out"/>
+                </form>
         </div>
     </body>
 </html>
