@@ -1,4 +1,4 @@
-package com.mihaicraicun.kbn.kbn.entities.forms;
+package com.mihaicraicun.kbn.kbn.model.forms;
 
 import lombok.Data;
 import javax.validation.constraints.Email;

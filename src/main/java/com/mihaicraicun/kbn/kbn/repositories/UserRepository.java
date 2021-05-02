@@ -1,6 +1,6 @@
 package com.mihaicraicun.kbn.kbn.repositories;
 
-import com.mihaicraicun.kbn.kbn.entities.User;
+import com.mihaicraicun.kbn.kbn.model.User;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

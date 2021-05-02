@@ -1,4 +1,4 @@
-package com.mihaicraicun.kbn.kbn.entities.forms;
+package com.mihaicraicun.kbn.kbn.model.forms;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;

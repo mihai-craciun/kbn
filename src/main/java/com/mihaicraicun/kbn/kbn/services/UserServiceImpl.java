@@ -1,6 +1,6 @@
 package com.mihaicraicun.kbn.kbn.services;
 
-import com.mihaicraicun.kbn.kbn.entities.User;
+import com.mihaicraicun.kbn.kbn.model.User;
 import com.mihaicraicun.kbn.kbn.repositories.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;

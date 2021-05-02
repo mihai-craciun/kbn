@@ -7,10 +7,10 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
-import com.mihaicraicun.kbn.kbn.entities.User;
-import com.mihaicraicun.kbn.kbn.entities.forms.LoginForm;
-import com.mihaicraicun.kbn.kbn.entities.forms.RegisterForm;
 import com.mihaicraicun.kbn.kbn.misc.ErrorHandler;
+import com.mihaicraicun.kbn.kbn.model.User;
+import com.mihaicraicun.kbn.kbn.model.forms.LoginForm;
+import com.mihaicraicun.kbn.kbn.model.forms.RegisterForm;
 import com.mihaicraicun.kbn.kbn.services.SecurityService;
 import com.mihaicraicun.kbn.kbn.services.UserService;
 

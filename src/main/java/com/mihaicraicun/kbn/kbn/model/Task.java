@@ -1,6 +1,6 @@
-package com.mihaicraicun.kbn.kbn.entities;
+package com.mihaicraicun.kbn.kbn.model;
 
-import java.util.UUID;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,6 +9,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -24,35 +26,62 @@ public class Task {
     private String id;
 
     private String name;
-
+    
     @Column(nullable = true)
     private String description;
-
+    
     @Enumerated(EnumType.STRING)
     private TaskType taskType;
-
+    
     @Enumerated(EnumType.STRING)
     private PriorityType priorityType;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @Enumerated(EnumType.STRING)
+    private State taskState;
+    
+    @ManyToOne(fetch = FetchType.LAZY)
     private Project project;
-
-    @ManyToOne(optional = true, fetch = FetchType.EAGER)
+    
+    @ManyToOne(optional = true, fetch = FetchType.LAZY)
     private User asignee;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User owner;
+    
     private Integer storyPoints = 0;
 
+    private Date created;
+    
+    private Date updated;
+
+    @PrePersist
+    protected void onCreate() {
+        created = new Date();
+    }
+    
+    @PreUpdate
+    protected void onUpdate() {
+        updated = new Date();
+    }
+    
     /**
      * The type of task
      */
     enum TaskType {
         FEATURE, BUG;
     }
-
+    
     /**
      * The priority
      */
     public enum PriorityType {
         HIGHEST_PRIORITY, HIGH_PRIORITY, MEDIUM_PRIORITY, LOW_PRIORITY, LOWEST_PRIORITY;
+    }
+
+    /**
+     * The current task state
+     */
+    public enum State {
+        BACKLOG, TO_DO, IN_PROGRESS, IN_REVIEW, IN_TEST, CLOSED;
     }
 }
