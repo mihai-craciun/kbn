@@ -1,6 +1,7 @@
 package com.mihaicraicun.kbn.kbn.model;
 
 import java.util.Date;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,35 +9,46 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.GenericGenerator;
 
 import lombok.Data;
+import lombok.NonNull;
 
-@Entity
 @Data
+@Entity
+@Table(name = "tasks")
 public class Task {
 
     @Id
     @Column(name = "id")
     @GenericGenerator(name = "uuid", strategy = "uuid4")
     private String id;
-
+    
+    @NotNull
+    @Column(name = "name")
     private String name;
     
-    @Column(nullable = true)
+    @Column(name = "description", nullable = true)
     private String description;
     
     @Enumerated(EnumType.STRING)
+    @Column(name = "task_type")
     private TaskType taskType;
     
     @Enumerated(EnumType.STRING)
+    @Column(name = "priority_type")
     private PriorityType priorityType;
 
+    @NonNull
     @Enumerated(EnumType.STRING)
+    @Column(name = "task_state")
     private State taskState;
     
     @ManyToOne(fetch = FetchType.LAZY)
@@ -48,15 +60,19 @@ public class Task {
     @ManyToOne(fetch = FetchType.LAZY)
     private User owner;
     
+    @Column(name = "story_points")
     private Integer storyPoints = 0;
 
+    @Column(name = "created_at")
     private Date created;
     
+    @Column(name = "updated_at")
     private Date updated;
 
     @PrePersist
     protected void onCreate() {
         created = new Date();
+        this.setId(UUID.randomUUID().toString());
     }
     
     @PreUpdate

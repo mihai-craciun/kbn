@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head th:insert="fragments/cssjs.html"> </head>
+    <body>
+        <div th:insert="fragments/navbar.html"></div>
+        <div class="col-6 offset-3 mt-5 mb-5">
+        <div th:if="${loginError}" class="alert alert-danger" role="alert">
+            Email or password is incorrect!
+        </div>
+        <form action="#" th:action="@{/projects/create}" th:object="${projectFormObject}" method="post">
+            <div class="form-group">
+                <label for="name">Project name</label>
+                <input id="name" type="text" th:field="*{name}" class="form-control" placeholder="MyAwesomeProject">
+                <div th:if="${not #lists.isEmpty(nameError)}"
+                    th:each="error, iter: ${nameError}" class="alert alert-danger mt-2">
+                    <p th:text="${error}" class="auth-error-element">Error</p>
+                    <hr th:if="${iter.index != iter.size-1}"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="description">A short description</label>
+                <input id="description" type="text" th:field="*{description}" class="form-control" placeholder="This is my awesome project.">
+                <div th:if="${not #lists.isEmpty(descriptionError)}"
+                    th:each="error, iter: ${descriptionError}" class="alert alert-danger mt-2">
+                    <p th:text="${error}" class="auth-error-element">Error</p>
+                    <hr th:if="${iter.index != iter.size-1}"/>
+                </div>
+            </div>
+            <div class="form-check">
+                <input id="isPrivate" type="checkbox" th:field="*{isPrivate}" class="form-check-input" th:checked="${false}">
+                <label class="form-check-label" for="isPrivate">Private Project</label>
+                <div th:if="${not #lists.isEmpty(isPrivateError)}"
+                    th:each="error, iter: ${isPrivateError}" class="alert alert-danger">
+                    <p th:text="${error}" class="auth-error-element">Error</p>
+                    <hr th:if="${iter.index != iter.size-1}"/>
+                </div>
+            </div>
+            <input type="submit" class="btn btn-primary mt-3" value="Create">
+            </form>
+        </div>
+        <footer th:include="fragments/footer"></footer>
+    </body>
+</html>

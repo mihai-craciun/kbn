@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head th:insert="fragments/cssjs.html"> </head>
+    <body>
+        <div th:insert="fragments/navbar.html"></div>
+        <div class="container col-10 offset-1">
+        <h5>Your projects</h5>
+            <table class="table" th:if="${not #lists.isEmpty(ownProjects)}">
+                <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Created At</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody th:each="project : ${ownProjects}">
+                    <tr>
+                        <td class="width: 20%">
+                            <a th:href="@{/projects/{id}(id=${project.getId()})}" th:text="${project.getName()}"></a>
+                        </td>
+                        <td style="width: 60%" th:text="${#strings.abbreviate(project.getDescription(), 50)}"></td>
+                        <td style="width: auto" th:text="${#dates.format(project.getCreated(), 'dd-MM-yyyy HH:mm')}"></td>
+                        <td style="width: 10%">
+                            <button class="btn btn-danger"><span class="fas fa-times"></span></button>
+                            <button class="btn btn-warning mr-2"><span class="fas fa-pen"></span></button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div th:unless="${not #lists.isEmpty(ownProjects)}">
+                <h6>You do not have any team projects at the moment.📖 😓</h6>
+                <a th:href="@{/projects/create}" class="btn btn-outline-info">
+                    <span class="fas fa-plus"></span> Create project
+                </a>
+            </div>
+            <h5 class="mt-5">Team projects</h5>
+            <table class="table" th:if="${not #lists.isEmpty(teamProjects)}">
+                <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Created At</th>
+                        <th scope="col">Owner</th>
+                    </tr>
+                </thead>
+                <tbody th:each="project : ${teamProjects}">
+                    <tr>
+                        <td class="width: 20%">
+                            <a th:href="@{/projects/{id}(id=${project.getId()})}" th:text="${project.getName()}"></a>
+                        </td>
+                        <td style="width: 60%" th:text="${#strings.abbreviate(project.getDescription(), 50)}"></td>
+                        <td style="width: auto%" th:text="${#dates.format(project.getCreated(), 'dd-MM-yyyy HH:mm')}"></td>
+                        <td style="width: 10%">
+                            <a th:href="@{/users/{id}(id=${project.getOwner().getId()})}" th:text="@${project.getOwner().getEmail()}"></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <h6 th:unless="${not #lists.isEmpty(teamProjects)}">You do not have any team projects at the moment. 📖 😓</h6>
+        </div>
+        <footer th:include="fragments/footer"></footer>
+    </body>
+</html>

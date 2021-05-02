@@ -3,10 +3,10 @@
 <html lang="en">
     <body>
         <div th:fragment="navbar" class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 box-shadow navbar-light" style="background-color: #a8ffe5">
-            <h5 class="my-0 mr-md-auto font-weight-normal" th:text="${@environment.getProperty('app.name')}"></h5>
+            <a th:href="@{/}" class="navbar-brand my-0 mr-md-auto font-weight-normal" th:text="${@environment.getProperty('app.name')}"></a>
             <nav class="my-2 my-md-0 mr-md-3">
-                <a class="p-2 text-dark" sec:authorize="isAuthenticated()" href="@{/projects/create}"><span class="fas fa-plus"></span> New Project</a>
-                <a class="p-2 text-dark" sec:authorize="isAuthenticated()" href="@{/projects}">Projects</a>
+                <a class="p-2 text-dark" sec:authorize="isAuthenticated()" th:href="@{/projects/create}"><span class="fas fa-plus"></span> New Project</a>
+                <a class="p-2 text-dark" sec:authorize="isAuthenticated()" th:href="@{/projects}">Projects</a>
             </nav>
             <a class="btn btn-outline-info mr-2" sec:authorize="isAnonymous()" th:href="@{/register}">Sign up</a>
             <a class="btn btn-outline-info mr-2" sec:authorize="isAnonymous()" th:href="@{/login}">Log in</a>
