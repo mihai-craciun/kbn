@@ -9,19 +9,19 @@
 <!-- Priority flags -->
 <div th:fragment="priority (value)" class="mr-1 ml-1">
     <th:block th:switch="${value}">
-    <span th:case="${1}" class="badge badge-red" data-toggle="tooltip" data-placement="bottom" title="1 - Highest Priority">
+    <span th:case="${'HIGHEST_PRIORITY'}" class="badge badge-red" data-toggle="tooltip" data-placement="bottom" title="1 - Highest Priority">
         <span class="fas fa-arrow-alt-circle-up"></span>
     </span>
-    <span th:case="${2}" class="badge badge-orange" data-toggle="tooltip" data-placement="bottom" title="2 - High Priority">
+    <span th:case="${'HIGH_PRIORITY'}" class="badge badge-orange" data-toggle="tooltip" data-placement="bottom" title="2 - High Priority">
         <span class="far fa-arrow-alt-circle-up"></span>
     </span>
-    <span th:case="${3}" class="badge badge-yellow" data-toggle="tooltip" data-placement="bottom" title="3 - Regular Priority">
+    <span th:case="${'REGULAR_PRIORITY'}" class="badge badge-yellow" data-toggle="tooltip" data-placement="bottom" title="3 - Regular Priority">
         <span class="fas fa-arrow-alt-circle-up"></span>
     </span>
-    <span th:case="${4}" class="badge badge-lightgreen" data-toggle="tooltip" data-placement="bottom" title="4 - Low Priority">
+    <span th:case="${'LOW_PRIORITY'}" class="badge badge-lightgreen" data-toggle="tooltip" data-placement="bottom" title="4 - Low Priority">
         <span class="fas fa-long-arrow-alt-down"></span>
     </span>
-    <span th:case="${5}" class="badge badge-green" data-toggle="tooltip" data-placement="bottom" title="5 - Lowest Priority">
+    <span th:case="${'LOWEST_PRIORITY'}" class="badge badge-green" data-toggle="tooltip" data-placement="bottom" title="5 - Lowest Priority">
         <span class="fas fa-arrow-alt-circle-down"></span>
     </span>
     </th:block>

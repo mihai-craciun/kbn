@@ -11,9 +11,9 @@
             <a class="btn btn-outline-info mr-2" sec:authorize="isAnonymous()" th:href="@{/register}">Sign up</a>
             <a class="btn btn-outline-info mr-2" sec:authorize="isAnonymous()" th:href="@{/login}">Log in</a>
             <a class="p2 text-dark" sec:authorize="isAuthenticated()" sec:authentication="name"></a>
-            <a href="javascript: document.logoutForm.submit()" sec:authorize="isAuthenticated()"  class="btn btn-outline-info ml-2"> Logout</a>
+            <a href="javascript: document.logoutForm.submit()" sec:authorize="isAuthenticated()" class="text-dark ml-4"> Logout</a>
                 <form name="logoutForm" th:action="@{/logout}" method="post" th:hidden="true">
-                    <input hidden type="submit" value="Sign Out"/>
+                    <input hidden type="submit" value="true"/>
                 </form>
         </div>
     </body>

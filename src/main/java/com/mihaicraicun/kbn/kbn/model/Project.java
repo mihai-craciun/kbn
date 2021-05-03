@@ -10,7 +10,6 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
@@ -34,7 +33,7 @@ public class Project {
     @Column(name = "name", unique = true)
     private String name;
 
-    @Column(name = "description", nullable = true)
+    @Column(name = "description", nullable = true, length = 1000)
     private String description;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -50,7 +49,7 @@ public class Project {
     @Column(name = "private")
     private Boolean isPrivate;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "project")
     private List<Task> tasks;
 
     @PrePersist

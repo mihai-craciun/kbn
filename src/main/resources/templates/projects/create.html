@@ -4,9 +4,6 @@
     <body>
         <div th:insert="fragments/navbar.html"></div>
         <div class="col-6 offset-3 mt-5 mb-5">
-        <div th:if="${loginError}" class="alert alert-danger" role="alert">
-            Email or password is incorrect!
-        </div>
         <form action="#" th:action="@{/projects/create}" th:object="${projectFormObject}" method="post">
             <div class="form-group">
                 <label for="name">Project name</label>

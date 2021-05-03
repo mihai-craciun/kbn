@@ -35,7 +35,7 @@ public class Task {
     @Column(name = "name")
     private String name;
     
-    @Column(name = "description", nullable = true)
+    @Column(name = "description", nullable = true, length = 1000)
     private String description;
     
     @Enumerated(EnumType.STRING)
@@ -91,7 +91,7 @@ public class Task {
      * The priority
      */
     public enum PriorityType {
-        HIGHEST_PRIORITY, HIGH_PRIORITY, MEDIUM_PRIORITY, LOW_PRIORITY, LOWEST_PRIORITY;
+        HIGHEST_PRIORITY, HIGH_PRIORITY, REGULAR_PRIORITY, LOW_PRIORITY, LOWEST_PRIORITY;
     }
 
     /**

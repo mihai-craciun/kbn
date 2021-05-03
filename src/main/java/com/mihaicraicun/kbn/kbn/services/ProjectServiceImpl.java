@@ -2,6 +2,8 @@ package com.mihaicraicun.kbn.kbn.services;
 
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import com.mihaicraicun.kbn.kbn.model.Project;
 import com.mihaicraicun.kbn.kbn.model.User;
 import com.mihaicraicun.kbn.kbn.model.forms.ProjectForm;
@@ -39,6 +41,7 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
+    @Transactional
     public void deleteById(String projectId) {
         projectRepository.deleteById(projectId);
     }
@@ -46,6 +49,14 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public Optional<Project> findByUserAndName(User user, String name) {
         return projectRepository.findByOwnerAndName(user, name);
+    }
+
+    @Override
+    public void update(Project project, ProjectForm projectForm) {
+        project.setName(projectForm.getName());
+        project.setDescription(projectForm.getDescription());
+        project.setIsPrivate(projectForm.getIsPrivate());
+        save(project);
     }
     
 }

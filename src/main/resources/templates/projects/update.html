@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head th:insert="fragments/cssjs.html"> </head>
+    <body>
+        <div th:insert="fragments/navbar.html"></div>
+        <div class="col-6 offset-3 mt-5 mb-5">
+        <div th:if="${updatedSuccesfully}" class="alert alert-success" role="alert">
+            Updated succesfully!
+        </div>
+        <form action="#" th:action="@{/projects/{id}(id=${project.getId()})}" th:object="${projectFormObject}" th:method="put">
+            <div class="form-group">
+                <label for="name">Project name</label>
+                <input id="name" type="text" th:field="*{name}" class="form-control" placeholder="MyAwesomeProject" th:value="${projectFormObject.getName()}">
+                <div th:if="${not #lists.isEmpty(nameError)}"
+                    th:each="error, iter: ${nameError}" class="alert alert-danger mt-2">
+                    <p th:text="${error}" class="auth-error-element">Error</p>
+                    <hr th:if="${iter.index != iter.size-1}"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="description">A short description</label>
+                <input id="description" type="text" th:field="*{description}" class="form-control" placeholder="This is my awesome project." th:value="${projectFormObject.getDescription()}">
+                <div th:if="${not #lists.isEmpty(descriptionError)}"
+                    th:each="error, iter: ${descriptionError}" class="alert alert-danger mt-2">
+                    <p th:text="${error}" class="auth-error-element">Error</p>
+                    <hr th:if="${iter.index != iter.size-1}"/>
+                </div>
+            </div>
+            <div class="form-check">
+                <input id="isPrivate" type="checkbox" th:field="*{isPrivate}" class="form-check-input" th:checked="${projectFormObject.getIsPrivate()}">
+                <label class="form-check-label" for="isPrivate">Private Project</label>
+                <div th:if="${not #lists.isEmpty(isPrivateError)}"
+                    th:each="error, iter: ${isPrivateError}" class="alert alert-danger">
+                    <p th:text="${error}" class="auth-error-element">Error</p>
+                    <hr th:if="${iter.index != iter.size-1}"/>
+                </div>
+            </div>
+            <input type="submit" class="btn btn-primary mt-3 float-left" value="Update">
+            </form>
+            <button class="btn btn-danger text-white float-right" data-toggle="modal" data-target="#delete-project">
+                <span class="fas fa-times"></span> Delete project
+            </button>
+            <div class="modal fade" id="delete-project" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel" th:text="'Delete project &quot;' + ${project.getName()} + '&quot;'"></h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            You canot undo this action, once the project is deleted you will not be able to recover it, and all the data attached to it will be lost
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+                            <a href="javascript:;" onclick="document.getElementById('delete-project-form').submit()" class="btn btn-danger">Delete</a>
+                            <form id="'delete-project-form" th:action="@{/projects/{id}(id=${project.getId()})}" th:method="delete" th:hidden="true">
+                                <input hidden type="submit" value="Sign Out"/>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+</div>
+        <footer th:include="fragments/footer"></footer>
+    </body>
+</html>

@@ -22,7 +22,7 @@
                                 <div>
                                     <div class="float-left d-flex">
                                         <span th:insert="fragments/flags :: feature"></span>
-                                        <span th:insert="fragments/flags :: priority(${2})"></span>
+                                        <span th:insert="fragments/flags :: priority(${'HIGH_PRIORITY'})"></span>
                                     </div>
                                     <div class="float-right">
                                         <span th:insert="fragments/flags :: story_points(${2})"></span>
@@ -36,7 +36,7 @@
                                 <div>
                                     <div class="float-left d-flex">
                                         <span th:insert="fragments/flags :: bug"></span>
-                                        <span th:insert="fragments/flags :: priority(${4})"></span>
+                                        <span th:insert="fragments/flags :: priority(${'HIGH_PRIORITY'})"></span>
                                     </div>
                                     <div class="float-right">
                                         <span th:insert="fragments/flags :: story_points(${5})"></span>
@@ -57,7 +57,7 @@
                                 <div>
                                     <div class="float-left d-flex">
                                         <span th:insert="fragments/flags :: feature"></span>
-                                        <span th:insert="fragments/flags :: priority(${1})"></span>
+                                        <span th:insert="fragments/flags :: priority(${'HIGHEST_PRIORITY'})"></span>
                                     </div>
                                     <div class="float-right">
                                         <span th:insert="fragments/flags :: story_points(${13})"></span>
@@ -85,7 +85,7 @@
                                 <div>
                                     <div class="float-left d-flex">
                                         <span th:insert="fragments/flags :: feature"></span>
-                                        <span th:insert="fragments/flags :: priority(${2})"></span>
+                                        <span th:insert="fragments/flags :: priority(${'HIGH_PRIORITY'})"></span>
                                     </div>
                                     <div class="float-right">
                                         <span th:insert="fragments/flags :: story_points(${3})"></span>
@@ -99,7 +99,7 @@
                                 <div>
                                     <div class="float-left d-flex">
                                         <span th:insert="fragments/flags :: feature"></span>
-                                        <span th:insert="fragments/flags :: priority(${5})"></span>
+                                        <span th:insert="fragments/flags :: priority(${'LOWEST_PRIORITY'})"></span>
                                     </div>
                                     <div class="float-right">
                                         <span th:insert="fragments/flags :: story_points(${2})"></span>
@@ -120,7 +120,7 @@
                                 <div>
                                     <div class="float-left d-flex">
                                         <span th:insert="fragments/flags :: feature"></span>
-                                        <span th:insert="fragments/flags :: priority(${4})"></span>
+                                        <span th:insert="fragments/flags :: priority(${'LOW_PRIORITY'})"></span>
                                     </div>
                                     <div class="float-right">
                                         <span th:insert="fragments/flags :: story_points(${8})"></span>
@@ -134,7 +134,7 @@
                                 <div>
                                     <div class="float-left d-flex">
                                         <span th:insert="fragments/flags :: bug"></span>
-                                        <span th:insert="fragments/flags :: priority(${4})"></span>
+                                        <span th:insert="fragments/flags :: priority(${'LOW_PRIORITY'})"></span>
                                     </div>
                                     <div class="float-right">
                                         <span th:insert="fragments/flags :: story_points(${5})"></span>

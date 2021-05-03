@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head th:insert="fragments/cssjs.html"> </head>
+    <body>
+        <div th:insert="fragments/navbar.html"></div>
+        <div class="col-10 offset-1" th:if ="${#strings.equals(project.getOwner().getEmail(), #authentication.getPrincipal().getUsername())}">
+            <a class="btn btn-warning ml-4 mr-4 mb-3 float-left" th:href="@{/projects/{id}/edit(id=${project.getId()})}">
+                <span class="fas fa-pen"></span> Configure project
+            </a>
+            <a class="btn btn-info ml-4 mr-4 mb-3 float-right" th:href="@{/tasks/new?projectId={id}(id=${project.getId()})}">
+                <span class="fas fa-plus"></span> Add task
+            </a>
+        </div>
+        <div class="mt-4 px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+            <h1 class="display-4" th:text="${project.getName()}"></h1>
+            <p class="lead" th:text="${project.getDescription()}"></p>
+        </div>
+        <div class="container col-10 text-center mr-auto d-flex justify-content-center">
+            <div class="row col-md-12">
+                <div class="column col-md-5ths p-1">
+                    <div class="bg-gray rounded fill-height">
+                        <div class="p-3">
+                            <span>To Do</span>
+                        </div>
+                        <div th:each="task : ${project.getTasks()}">
+                            <div th:if="${#strings.equals(task.getState(), 'TO_DO'}" th:insert="fragments/task (task)"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="column col-md-5ths p-1">
+                    <div class="bg-gray rounded fill-height">
+                        <div class="p-3">
+                            <span>In Progress</span>
+                        </div>
+                        <div th:each="task : ${project.getTasks()}">
+                            <div th:if="${#strings.equals(task.getState(), 'IN_PROGRESS'}" th:insert="fragments/task (task)"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="column col-md-5ths p-1">
+                    <div class="bg-gray rounded fill-height">
+                        <div class="p-3">
+                            <span>In Review</span>
+                        </div>
+                        <div th:each="task : ${project.getTasks()}">
+                            <div th:if="${#strings.equals(task.getState(), 'IN_REVIEW'}" th:insert="fragments/task (task)"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="column col-md-5ths p-1">
+                    <div class="bg-gray rounded fill-height">
+                        <div class="p-3">
+                            <span>In Test</span>
+                        </div>
+                        <div th:each="task : ${project.getTasks()}">
+                            <div th:if="${#strings.equals(task.getState(), 'IN_TEST'}" th:insert="fragments/task (task)"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="column col-md-5ths p-1">
+                    <div class="bg-gray rounded fill-height">
+                        <div class="p-3">
+                            <span>Closed</span>
+                        </div>
+                         <div th:each="task : ${project.getTasks()}">
+                            <div th:if="${#strings.equals(task.getState(), 'CLOSED'}" th:insert="fragments/task (task)"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer th:include="fragments/footer"></footer>
+    </body>
+</html>

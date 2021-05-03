@@ -12,7 +12,7 @@ public class ProjectForm {
     @Pattern(regexp = "^[a-zA-Z0-9\\_\\-]+$", message = "The name can only contain letters, digits, underscores and hyphens.")
     public String name;
 
-    @Size(min = 0, max = 255, message = "The description can only contain 255 characters maximum.")
+    @Size(min = 0, max = 1000, message = "The description can contain 1000 characters maximum.")
     public String description;
 
     public Boolean isPrivate;

@@ -12,7 +12,7 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "users_projects")
+@Table(name = "works_on")
 public class WorksOn {
 
     @EmbeddedId

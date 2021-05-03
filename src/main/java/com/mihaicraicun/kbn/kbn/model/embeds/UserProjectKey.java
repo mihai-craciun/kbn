@@ -10,5 +10,5 @@ import lombok.Data;
 @Embeddable
 public class UserProjectKey implements Serializable {
     String projectId;
-    String userEmail;
+    String userId;
 }

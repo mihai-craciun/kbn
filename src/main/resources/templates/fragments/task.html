@@ -1,0 +1,15 @@
+<div th:fragment="taskCard (task)" draggable="true" class="card mb-2 box-shadow m-1 cursor-pointer">
+    <div class="card-body">
+        <a th:href="@{/tasks/{id}(id=${task.getId()})}" th:text="${task.getName()}"></a>
+        <div>
+            <div class="float-left d-flex">
+                <span th:if="${#strings.equals(task.getTaskType(), 'FEATURE')}" th:insert="fragments/flags :: feature"></span>
+                <span th:if="${#strings.equals(task.getTaskType(), 'BUG')}" th:insert="fragments/flags :: bug"></span>
+                <span th:insert="fragments/flags :: priority(${task.getPriorityType()})"></span>
+            </div>
+            <div class="float-right">
+                <span th:insert="fragments/flags :: story_points(${task.getStoryPoints()})"></span>
+            </div>
+        </div>
+    </div>
+</div>
