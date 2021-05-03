@@ -69,6 +69,18 @@
                 </div>
             </div>
         </div>
+        <div class="col-10 offset-1 p-3 mt-3">
+            <div class="col-12">
+            <div class="bg-gray rounded fill-height">
+                <div class="p-3">
+                    <span>Backlog</span>
+                </div>
+                    <div th:each="task : ${project.getTasks()}">
+                    <div th:if="${#strings.equals(task.getState(), 'BACKLOG'}" th:insert="fragments/task (task)"></div>
+                </div>
+            </div>
+            </div>
+        </div>
         <footer th:include="fragments/footer"></footer>
     </body>
 </html>

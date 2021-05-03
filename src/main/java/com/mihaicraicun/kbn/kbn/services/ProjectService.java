@@ -2,8 +2,7 @@ package com.mihaicraicun.kbn.kbn.services;
 
 import java.util.Optional;
 
-import javax.validation.Valid;
-
+import com.mihaicraicun.kbn.kbn.controllers.exceptions.ProjectNotFoundException;
 import com.mihaicraicun.kbn.kbn.model.Project;
 import com.mihaicraicun.kbn.kbn.model.User;
 import com.mihaicraicun.kbn.kbn.model.forms.ProjectForm;
@@ -15,4 +14,6 @@ public interface ProjectService {
     void save(Project project);
     void deleteById(String projectId);
 	void update(Project project, ProjectForm projectForm);
+    Project getProjectByIdVisibleByCurrentUser(String id) throws ProjectNotFoundException;
+    Project getProjectByIdEditableByCurrentUser(String id) throws ProjectNotFoundException;
 }

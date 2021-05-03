@@ -8,10 +8,8 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
-import com.mihaicraicun.kbn.kbn.controllers.exceptions.ProjectNotFoundException;
 import com.mihaicraicun.kbn.kbn.misc.ErrorHandler;
 import com.mihaicraicun.kbn.kbn.model.Project;
-import com.mihaicraicun.kbn.kbn.model.User;
 import com.mihaicraicun.kbn.kbn.model.forms.ProjectForm;
 import com.mihaicraicun.kbn.kbn.services.ProjectService;
 import com.mihaicraicun.kbn.kbn.services.WorksOnService;
@@ -43,8 +41,8 @@ public class ProjectsController extends BaseController {
     
     @GetMapping("")
     public String getProjects(Model model) {
-        model.addAttribute("ownProjects", getCurrentUser().getProjects());
-        model.addAttribute("teamProjects", worksOnService.getProjectsByUser(getCurrentUser()));
+        model.addAttribute("ownProjects", userService.currentUser().getProjects());
+        model.addAttribute("teamProjects", worksOnService.getProjectsByUser(userService.currentUser()));
         return "projects/all";
     }
 
@@ -67,7 +65,7 @@ public class ProjectsController extends BaseController {
             errors = new HashMap<>();
         }
 
-        if (projectService.findByUserAndName(getCurrentUser(), projectFormObject.getName()).isPresent()) {
+        if (projectService.findByUserAndName(userService.currentUser(), projectFormObject.getName()).isPresent()) {
             if (!errors.containsKey("name"))
                 errors.put("name", new ArrayList<String>());
             errors.get("name").add("You already have a project created with the same name");
@@ -82,7 +80,7 @@ public class ProjectsController extends BaseController {
         }
 
         try {
-            Project project = projectService.create(projectFormObject, getCurrentUser());
+            Project project = projectService.create(projectFormObject, userService.currentUser());
             return "redirect:/projects/" + project.getId();
         } catch (Exception e) {
             return "error";
@@ -91,43 +89,30 @@ public class ProjectsController extends BaseController {
 
     @GetMapping("/{id}")
     public String getProject(@PathVariable String id, Model model) {
-        try {
-            Project project = projectVisibilityChecker(id, false);
-            model.addAttribute("project", project);
-            return "projects/project";
-        } catch (ProjectNotFoundException e) {
-            throw e;
-        }
+        Project project = projectService.getProjectByIdVisibleByCurrentUser(id);
+        model.addAttribute("project", project);
+        return "projects/project";
     }
 
     @GetMapping("/{id}/edit")
     public String editProject(@PathVariable String id, Model model) {
-        try {
-            // middleware
-            Project project = projectVisibilityChecker(id, true);
-            model.addAttribute("project", project);
+        Project project = projectService.getProjectByIdEditableByCurrentUser(id);
+        model.addAttribute("project", project);
 
-            // fill form
-            ProjectForm projectForm = new ProjectForm();
-            projectForm.setName(project.getName());
-            projectForm.setDescription(project.getDescription());
-            projectForm.setIsPrivate(project.getIsPrivate());
-            model.addAttribute("projectFormObject", projectForm);
-            
-            return "projects/update";
-        } catch (ProjectNotFoundException e) {
-            throw e;
-        }
+        // fill form
+        ProjectForm projectForm = new ProjectForm();
+        projectForm.setName(project.getName());
+        projectForm.setDescription(project.getDescription());
+        projectForm.setIsPrivate(project.getIsPrivate());
+        model.addAttribute("projectFormObject", projectForm);
+        
+        return "projects/update";
     }
 
     @DeleteMapping("/{id}")
     public String deleteProject(@PathVariable String id) {
-        try {
-            projectVisibilityChecker(id, true);
-        } catch (ProjectNotFoundException e) {
-            throw e;
-        }
-        projectService.deleteById(id);
+        Project project = projectService.getProjectByIdEditableByCurrentUser(id);
+        projectService.deleteById(project.getId());
         return "redirect:/projects";
     }
 
@@ -137,12 +122,7 @@ public class ProjectsController extends BaseController {
                            BindingResult bindingResult,
                            RedirectAttributes redirectAttributes,
                            Model model) {
-        // middleware
-        try {
-            projectVisibilityChecker(id, true);
-        } catch (ProjectNotFoundException e) {
-            throw e;
-        }
+        Project project = projectService.getProjectByIdEditableByCurrentUser(id);
 
         Map<String, List<String>> errors;
 
@@ -152,7 +132,7 @@ public class ProjectsController extends BaseController {
             errors = new HashMap<>();
         }
 
-        Optional<Project> projectWithSameName = projectService.findByUserAndName(getCurrentUser(), projectFormObject.getName());
+        Optional<Project> projectWithSameName = projectService.findByUserAndName(userService.currentUser(), projectFormObject.getName());
         if (projectWithSameName.isPresent() && !projectWithSameName.get().getId().equals(id)) {
             if (!errors.containsKey("name"))
                 errors.put("name", new ArrayList<String>());
@@ -168,40 +148,11 @@ public class ProjectsController extends BaseController {
         }
 
         try {
-            Optional<Project> project = projectService.findById(id);
-            if (!project.isPresent()) {
-                throw new ProjectNotFoundException();
-            }
-            projectService.update(project.get(), projectFormObject);
+            projectService.update(project, projectFormObject);
             redirectAttributes.addFlashAttribute("updatedSuccesfully", true);
             return "redirect:/projects/" + id + "/edit";
         } catch (Exception e) {
             return "error";
         }
     }
-
-    /**
-     * Middleware for checking the visibility of the project to the user
-     */
-    private Project projectVisibilityChecker(String id, boolean ownerOnly) throws ProjectNotFoundException {
-        Optional<Project> projectContainer = projectService.findById(id);
-        if (!projectContainer.isPresent()) {
-            throw new ProjectNotFoundException();
-        }
-        Project project = projectContainer.get();
-        User user = getCurrentUser();
-        if (project.getIsPrivate()) {
-            boolean isOwner = project.getOwner().equals(user);
-            // TODO user should be able to view project if the 
-            boolean thisUserWorksOnProject = true;
-            if (ownerOnly && !isOwner) {
-                throw new ProjectNotFoundException();
-            }
-            if (!isOwner && !thisUserWorksOnProject) {
-                throw new ProjectNotFoundException();
-            }
-        }
-        return projectContainer.get();
-    }
-    
 }

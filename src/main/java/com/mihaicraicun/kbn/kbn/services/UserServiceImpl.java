@@ -5,6 +5,8 @@ import com.mihaicraicun.kbn.kbn.model.User.Role;
 import com.mihaicraicun.kbn.kbn.repositories.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -61,6 +63,19 @@ public class UserServiceImpl implements UserService {
             userRepository.save(guest);
         }
         return guest;
+    }
+
+    @Override
+    public User currentUser() {
+        if (SecurityContextHolder.getContext().getAuthentication() != null &&
+                SecurityContextHolder.getContext().getAuthentication().isAuthenticated() &&
+                //when Anonymous Authentication is enabled
+                !(SecurityContextHolder.getContext().getAuthentication()
+                        instanceof AnonymousAuthenticationToken)) {
+            String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+            return findByEmail(userName);
+        }
+        return guestUser();
     }
 
     

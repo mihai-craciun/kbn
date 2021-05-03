@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import com.mihaicraicun.kbn.kbn.controllers.exceptions.ProjectNotFoundException;
 import com.mihaicraicun.kbn.kbn.model.Project;
 import com.mihaicraicun.kbn.kbn.model.User;
 import com.mihaicraicun.kbn.kbn.model.forms.ProjectForm;
@@ -17,6 +18,9 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Autowired
     ProjectRepository projectRepository;
+
+    @Autowired
+    UserService userService;
 
     @Override
     public Optional<Project> findById(String id) {
@@ -52,11 +56,40 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
+    @Transactional
     public void update(Project project, ProjectForm projectForm) {
         project.setName(projectForm.getName());
         project.setDescription(projectForm.getDescription());
         project.setIsPrivate(projectForm.getIsPrivate());
         save(project);
+    }
+
+    @Override
+    public Project getProjectByIdVisibleByCurrentUser(String id) throws ProjectNotFoundException{
+        Optional<Project> projectContainer = findById(id);
+        if (!projectContainer.isPresent()) {
+            throw new ProjectNotFoundException();
+        }
+        Project project = projectContainer.get();
+        User user = userService.currentUser();
+        if (project.getIsPrivate()) {
+            boolean isOwner = project.getOwner().equals(user);
+            // TODO user should be able to view project if the 
+            boolean thisUserWorksOnProject = true;
+            if (!isOwner && !thisUserWorksOnProject) {
+                throw new ProjectNotFoundException();
+            }
+        }
+        return projectContainer.get();
+    }
+
+    @Override
+    public Project getProjectByIdEditableByCurrentUser(String id) throws ProjectNotFoundException {
+        Project project = getProjectByIdVisibleByCurrentUser(id);
+        if (!project.getOwner().equals(userService.currentUser())) {
+            throw new ProjectNotFoundException();
+        }
+        return project;
     }
     
 }

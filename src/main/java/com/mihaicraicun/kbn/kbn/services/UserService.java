@@ -13,4 +13,6 @@ public interface UserService {
     User findByEmail(String username);
 
     User guestUser();
+
+    User currentUser();
 }
