@@ -152,8 +152,8 @@ public class ProjectsController extends BaseController {
             errors = new HashMap<>();
         }
 
-        Optional<Project> projectContainer = projectService.findByUserAndName(getCurrentUser(), projectFormObject.getName());
-        if (projectContainer.isPresent() && !projectContainer.get().getId().equals(id)) {
+        Optional<Project> projectWithSameName = projectService.findByUserAndName(getCurrentUser(), projectFormObject.getName());
+        if (projectWithSameName.isPresent() && !projectWithSameName.get().getId().equals(id)) {
             if (!errors.containsKey("name"))
                 errors.put("name", new ArrayList<String>());
             errors.get("name").add("You already have a project created with the same name");
@@ -168,7 +168,11 @@ public class ProjectsController extends BaseController {
         }
 
         try {
-            projectService.update(projectContainer.get(), projectFormObject);
+            Optional<Project> project = projectService.findById(id);
+            if (!project.isPresent()) {
+                throw new ProjectNotFoundException();
+            }
+            projectService.update(project.get(), projectFormObject);
             redirectAttributes.addFlashAttribute("updatedSuccesfully", true);
             return "redirect:/projects/" + id + "/edit";
         } catch (Exception e) {
