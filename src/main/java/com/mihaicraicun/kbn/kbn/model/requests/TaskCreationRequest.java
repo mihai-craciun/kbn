@@ -33,8 +33,8 @@ public class TaskCreationRequest implements Serializable {
     @JsonProperty("priorityType")
     private PriorityType priorityType;
 
-    @JsonProperty("asigneeId")
-    private String asigneeId;
+    @JsonProperty("asigneeEmail")
+    private String asigneeEmail;
 
     @JsonProperty("storyPoints")
     private Integer storyPoints;

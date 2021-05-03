@@ -15,12 +15,9 @@ import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import org.hibernate.annotations.GenericGenerator;
 
 import lombok.Data;
-import lombok.NonNull;
 
 @Data
 @Entity
@@ -47,7 +44,6 @@ public class Task {
     @Column(name = "priority_type")
     private PriorityType priorityType;
 
-    @NonNull
     @Enumerated(EnumType.STRING)
     @Column(name = "task_state")
     private State taskState;

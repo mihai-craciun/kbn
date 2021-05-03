@@ -7,9 +7,11 @@ import javax.validation.Valid;
 
 import com.mihaicraicun.kbn.kbn.misc.ErrorHandler;
 import com.mihaicraicun.kbn.kbn.model.Project;
+import com.mihaicraicun.kbn.kbn.model.Task;
 import com.mihaicraicun.kbn.kbn.model.requests.TaskCreationRequest;
 import com.mihaicraicun.kbn.kbn.model.responses.TaskCreationResponse;
 import com.mihaicraicun.kbn.kbn.services.ProjectService;
+import com.mihaicraicun.kbn.kbn.services.TaskService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
@@ -23,6 +25,9 @@ public class TasksController extends BaseController {
     
     @Autowired
     ProjectService projectService;
+
+    @Autowired
+    TaskService taskService;
 
     @PostMapping("")
     public TaskCreationResponse createTask(@Valid TaskCreationRequest request, BindingResult bindingResult) {
@@ -39,7 +44,7 @@ public class TasksController extends BaseController {
             return response;
         }
 
-        // Project project = ProjectsController.projectVisibilityChecker(request.getProjectId(), true);
-        return new TaskCreationResponse();
+        taskService.create(request);
+        return response;
     }
 }
