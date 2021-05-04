@@ -65,7 +65,7 @@
             <div class="container col-10 text-center mr-auto d-flex justify-content-center">
                 <div class="row col-md-12">
                     <div class="column col-md-5ths p-1">
-                        <div class="bg-gray rounded fill-height">
+                        <div id="TO_DO" class="task-drop bg-gray rounded fill-height" ondragenter="highlight(this)" ondragleave="stop_highlight(this)" ondrop="move_task_to_column(event, this)" ondragover="event.preventDefault()">
                             <div class="p-3">
                                 <span>To Do</span>
                             </div>
@@ -75,7 +75,7 @@
                         </div>
                     </div>
                     <div class="column col-md-5ths p-1">
-                        <div class="bg-gray rounded fill-height">
+                        <div id="IN_PROGRESS" class="task-drop bg-gray rounded fill-height" ondragenter="highlight(this)" ondragleave="stop_highlight(this)" ondrop="move_task_to_column(event, this)" ondragover="event.preventDefault()">
                             <div class="p-3">
                                 <span>In Progress</span>
                             </div>
@@ -85,7 +85,7 @@
                         </div>
                     </div>
                     <div class="column col-md-5ths p-1">
-                        <div class="bg-gray rounded fill-height">
+                        <div id="IN_REVIEW" class="task-drop bg-gray rounded fill-height" ondragenter="highlight(this)" ondragleave="stop_highlight(this)" ondrop="move_task_to_column(event, this)" ondragover="event.preventDefault()">
                             <div class="p-3">
                                 <span>In Review</span>
                             </div>
@@ -95,7 +95,7 @@
                         </div>
                     </div>
                     <div class="column col-md-5ths p-1">
-                        <div class="bg-gray rounded fill-height">
+                        <div id="IN_TEST" class="task-drop bg-gray rounded fill-height" ondragenter="highlight(this)" ondragleave="stop_highlight(this)" ondrop="move_task_to_column(event, this)" ondragover="event.preventDefault()">
                             <div class="p-3">
                                 <span>In Test</span>
                             </div>
@@ -105,7 +105,7 @@
                         </div>
                     </div>
                     <div class="column col-md-5ths p-1">
-                        <div class="bg-gray rounded fill-height">
+                        <div id="CLOSED" class="task-drop bg-gray rounded fill-height" ondragenter="highlight(this)" ondragleave="stop_highlight(this)" ondrop="move_task_to_column(event, this)" ondragover="event.preventDefault()">
                             <div class="p-3">
                                 <span>Closed</span>
                             </div>
@@ -118,7 +118,7 @@
             </div>
             <div class="col-10 offset-1 p-3 mt-3">
                 <div class="col-12">
-                    <div class="bg-gray rounded fill-height">
+                    <div id="BACKLOG" class="task-drop bg-gray rounded fill-height" ondragenter="highlight(this)" ondragleave="stop_highlight(this)" ondrop="move_task_to_column(event, this)" ondragover="event.preventDefault()">
                         <div class="p-3">
                             <span>Backlog</span>
                         </div>

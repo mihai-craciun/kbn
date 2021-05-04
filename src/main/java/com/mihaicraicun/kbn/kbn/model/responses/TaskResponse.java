@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 @Data
-public class TaskCreationResponse implements Serializable {
+public class TaskResponse implements Serializable {
 
     @JsonProperty("hasErrors")
     Boolean hasErrors;

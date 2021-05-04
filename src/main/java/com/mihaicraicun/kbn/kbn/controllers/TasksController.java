@@ -7,13 +7,19 @@ import javax.validation.Valid;
 
 import com.mihaicraicun.kbn.kbn.misc.ErrorHandler;
 import com.mihaicraicun.kbn.kbn.model.requests.TaskCreationRequest;
-import com.mihaicraicun.kbn.kbn.model.responses.TaskCreationResponse;
+import com.mihaicraicun.kbn.kbn.model.requests.TaskDeleteRequest;
+import com.mihaicraicun.kbn.kbn.model.requests.TaskMoveRequest;
+import com.mihaicraicun.kbn.kbn.model.requests.TaskUpdateRequest;
+import com.mihaicraicun.kbn.kbn.model.responses.TaskResponse;
 import com.mihaicraicun.kbn.kbn.services.ProjectService;
 import com.mihaicraicun.kbn.kbn.services.TaskService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,9 +35,9 @@ public class TasksController extends BaseController {
     TaskService taskService;
 
     @PostMapping("")
-    public TaskCreationResponse createTask(@Valid @RequestBody TaskCreationRequest request, BindingResult bindingResult) {
+    public TaskResponse createTask(@Valid @RequestBody TaskCreationRequest request, BindingResult bindingResult) {
         
-        TaskCreationResponse response = new TaskCreationResponse();
+        TaskResponse response = new TaskResponse();
         response.setHasErrors(false);
 
         Map<String, List<String>> errors;
@@ -44,6 +50,61 @@ public class TasksController extends BaseController {
         }
 
         taskService.create(request);
+        return response;
+    }
+
+    @PutMapping("")
+    public TaskResponse updateTask(@Valid @RequestBody TaskUpdateRequest request, BindingResult bindingResult) {
+        
+        TaskResponse response = new TaskResponse();
+        response.setHasErrors(false);
+
+        Map<String, List<String>> errors;
+
+        if (bindingResult.hasErrors()) {
+            errors = ErrorHandler.convertBindingResultErrorsToMap(bindingResult);
+            response.setHasErrors(true);
+            response.setErrors(errors);
+            return response;
+        }
+
+        taskService.update(request);
+        return response;
+    }
+
+    @PatchMapping("")
+    public TaskResponse moveTask(@Valid @RequestBody TaskMoveRequest request, BindingResult bindingResult) {
+        TaskResponse response = new TaskResponse();
+        response.setHasErrors(false);
+
+        Map<String, List<String>> errors;
+
+        if (bindingResult.hasErrors()) {
+            errors = ErrorHandler.convertBindingResultErrorsToMap(bindingResult);
+            response.setHasErrors(true);
+            response.setErrors(errors);
+            return response;
+        }
+
+        taskService.moveTask(request);
+        return response;
+    }
+
+    @DeleteMapping("")
+    public TaskResponse deleteTask(@Valid @RequestBody TaskDeleteRequest request, BindingResult bindingResult) {
+        TaskResponse response = new TaskResponse();
+        response.setHasErrors(false);
+
+        Map<String, List<String>> errors;
+
+        if (bindingResult.hasErrors()) {
+            errors = ErrorHandler.convertBindingResultErrorsToMap(bindingResult);
+            response.setHasErrors(true);
+            response.setErrors(errors);
+            return response;
+        }
+
+        taskService.deleteById(request.getId());
         return response;
     }
 }

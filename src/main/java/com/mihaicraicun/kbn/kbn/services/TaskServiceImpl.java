@@ -2,9 +2,14 @@ package com.mihaicraicun.kbn.kbn.services;
 
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
+import com.mihaicraicun.kbn.kbn.controllers.exceptions.TaskNotFoundException;
 import com.mihaicraicun.kbn.kbn.model.Task;
 import com.mihaicraicun.kbn.kbn.model.Task.State;
 import com.mihaicraicun.kbn.kbn.model.requests.TaskCreationRequest;
+import com.mihaicraicun.kbn.kbn.model.requests.TaskMoveRequest;
+import com.mihaicraicun.kbn.kbn.model.requests.TaskUpdateRequest;
 import com.mihaicraicun.kbn.kbn.repositories.TaskRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,11 +33,20 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    @Transactional
     public void deleteById(String id) {
+        Optional<Task> taskContainer = findById(id);
+        if (!taskContainer.isPresent()) {
+            throw new TaskNotFoundException();
+        }
+        Task task = taskContainer.get();
+        // Test for project accesibility
+        projectService.getProjectByIdVisibleByCurrentUser(task.getProject().getId());
         taskRepository.deleteById(id);
     }
 
     @Override
+    @Transactional
     public Task create(TaskCreationRequest taskCreationRequest) {
         Task task = new Task();
         task.setAsignee(userService.findByEmail(taskCreationRequest.getAsigneeEmail()));
@@ -51,6 +65,38 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public void save(Task task) {
         taskRepository.save(task);
+    }
+
+    @Override
+    public void update(TaskUpdateRequest taskUpdateRequest) {
+        Optional<Task> taskContainer = findById(taskUpdateRequest.getId());
+        if (!taskContainer.isPresent()) {
+            throw new TaskNotFoundException();
+        }
+        Task task = taskContainer.get();
+        // Test for project accesibility
+        projectService.getProjectByIdVisibleByCurrentUser(task.getProject().getId());
+        task.setName(taskUpdateRequest.getName());
+        task.setDescription(taskUpdateRequest.getDescription());
+        task.setPriorityType(taskUpdateRequest.getPriorityType());
+        task.setTaskType(taskUpdateRequest.getTaskType());
+        task.setStoryPoints(taskUpdateRequest.getStoryPoints());
+        save(task);
+    }
+
+    @Override
+    @Transactional
+    public void moveTask(TaskMoveRequest taskMoveRequest) {
+        Optional<Task> taskContainer = findById(taskMoveRequest.getId());
+        if (!taskContainer.isPresent()) {
+            throw new TaskNotFoundException();
+        }
+        Task task = taskContainer.get();
+        // Test for project accesibility
+        projectService.getProjectByIdVisibleByCurrentUser(task.getProject().getId());
+        task.setTaskState(taskMoveRequest.getTaskState());
+        save(task);
+        
     }
     
 }

@@ -35,25 +35,13 @@
                 return indexed_array;
             }
 
-            // Create task from form ID
-            function createTaskFromFormId(id) {
-                // Get form data as JSON
-                var formData = getFormData($("#" + id))
-                console.log(formData)
-                $.ajax({
-                    type: "POST",
+            // Generic task request
+            function makeTaskRequestWithData(requestData, requestType, callback) {
+                    $.ajax({
+                    type: requestType,
                     url: "/tasks",
-                    data: JSON.stringify(formData),
-                    success: function(data) {
-                        console.log(data)
-                        if (data.hasErrors) {
-                            for (const [key, value] of Object.entries(data.errors)) {
-                                $("#" + id).find('[name="' + key + '"]').parent().append("<p class='alert alert-danger mt-2'>" + value + "</p>")
-                            }
-                        } else {
-                            location.reload();
-                        }
-                    },
+                    data: JSON.stringify(requestData),
+                    success: callback,
                     dataType: 'json',
                     headers: { 
                         'Accept': 'application/json',
@@ -61,8 +49,99 @@
                     },
                 })
             }
+
+            // Create task from form ID
+            function createTaskFromFormId(id) {
+                // Get form data as JSON
+                var formData = getFormData($("#" + id))
+                makeTaskRequestWithData(formData, "POST", data => {
+                    if (data.hasErrors) {
+                        for (const [key, value] of Object.entries(data.errors)) {
+                            $("#" + id).find('[name="' + key + '"]').parent().append("<p class='alert alert-danger mt-2'>" + value + "</p>")
+                        }
+                    } else {
+                        location.reload();
+                    }
+                })
+            }
+
+            // Update task from form ID
+            function updateTaskWithIdFromFormId(taskId, id) {
+                // Get form data as JSON
+                var formData = getFormData($("#" + id))
+                const filteredData = {
+                    id: taskId,
+                    name: formData.name,
+                    description: formData.description,
+                    taskType: formData.taskType,
+                    priorityType: formData.priorityType,
+                    asigneeEmail: formData.asigneeEmail,
+                    storyPoints: formData.storyPoints
+                }
+                makeTaskRequestWithData(filteredData, "PUT", data => {
+                    if (data.hasErrors) {
+                        for (const [key, value] of Object.entries(data.errors)) {
+                            $("#" + id).find('[name="' + key + '"]').parent().append("<p class='alert alert-danger mt-2'>" + value + "</p>")
+                        }
+                    } else {
+                        location.reload();
+                    }
+                })
+            }
+
+            // Delete task by ID
+            function deleteTaskWithIdUpdateForm(taskId, formId) {
+                makeTaskRequestWithData({id: taskId}, "DELETE", data => {
+                    if (data.hasErrors) {
+                        $("#" + formId).prepend("<p class='alert alert-danger mb-2'>ERROR! Could not delete task!</p>")
+                    } else {
+                        location.reload();
+                    }
+                })
+            }
+
+            // Move task by ID
+            function moveTaskById(taskId, state) {
+                makeTaskRequestWithData({id: taskId, taskState: state}, "PATCH", data => {
+                        location.reload();
+                })
+            }
+
+            function highlight(element) {
+                $(element).css('opacity', 0.5)
+            }
+
+            function stop_highlight(element) {
+                $(element).css('opacity', 1)
+            }
+
+            function move_task_to_column(event, target) {
+                $(target).css('opacity', 1)
+                console.log(event.dataTransfer.getData('id'), target.id)
+                moveTaskById(event.dataTransfer.getData('id'), target.id)
+            }
+
+            function allowDrop(event) {
+                event.preventDefault();
+            }
+
+            function dropTask(event) {
+                event.preventDefault();
+                var data = event.dataTransfer.getData("Text");
+                event.target.appendChild(document.getElementById(data));
+                document.getElementById("demo").innerHTML = "The p element was dropped";
+            }
+
+            function taskDragStart(event) {
+                $(".task-drop > *").find().css("pointer-events", "none")
+                event.dataTransfer.setData('id', event.target.id);
+            }
         </script>
         <style>
+            .task-drop * {
+                pointer-events: all;
+            }
+
             .bg-gray {
                 background-color: #dbdbdb;
             }
