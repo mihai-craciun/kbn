@@ -18,6 +18,7 @@
                     <tr>
                         <td class="width: 20%">
                             <a th:href="@{/projects/{id}(id=${project.getId()})}" th:text="${project.getName()}"></a>
+                            <span th:if="${project.getIsPrivate()}" class="ml-1 fas fa-user-secret" data-toggle="tooltip" data-placement="bottom" title="Private project"></span>
                         </td>
                         <td style="width: 60%" th:text="${#strings.abbreviate(project.getDescription(), 50)}"></td>
                         <td style="width: auto" th:text="${#dates.format(project.getCreated(), 'dd-MM-yyyy HH:mm')}"></td>
@@ -70,11 +71,11 @@
                 </thead>
                 <tbody th:each="project : ${teamProjects}">
                     <tr>
-                        <td class="width: 20%">
+                        <td style="width: 20%">
                             <a th:href="@{/projects/{id}(id=${project.getId()})}" th:text="${project.getName()}"></a>
                         </td>
                         <td style="width: 60%" th:text="${#strings.abbreviate(project.getDescription(), 50)}"></td>
-                        <td style="width: auto%" th:text="${#dates.format(project.getCreated(), 'dd-MM-yyyy HH:mm')}"></td>
+                        <td style="width: auto" th:text="${#dates.format(project.getCreated(), 'dd-MM-yyyy HH:mm')}"></td>
                         <td style="width: 10%">
                             <a th:href="@{/users/{id}(id=${project.getOwner().getId()})}" th:text="@${project.getOwner().getEmail()}"></a>
                         </td>

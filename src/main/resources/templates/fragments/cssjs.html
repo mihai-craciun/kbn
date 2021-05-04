@@ -7,10 +7,10 @@
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
 
         <!-- JS -->
-        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+        <!--script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script -->
+        <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-
         <script>
             $(document).ready(function(){
                 // Enable tooltips
@@ -18,9 +18,49 @@
                 // Enable modals
                 $('.modal').each(function() {
                     $(this).on('shown.bs.modal', function () {
-                        $(this).trigger('focus')
-                })
+                        $(this).trigger('focus');
+                     });
+                });
             });
+
+            // Get form as json
+            function getFormData($form) {
+                var unindexed_array = $form.serializeArray();
+                var indexed_array = {};
+
+                $.map(unindexed_array, function(n, i){
+                    indexed_array[n['name']] = n['value'];
+                });
+
+                return indexed_array;
+            }
+
+            // Create task from form ID
+            function createTaskFromFormId(id) {
+                // Get form data as JSON
+                var formData = getFormData($("#" + id))
+                console.log(formData)
+                $.ajax({
+                    type: "POST",
+                    url: "/tasks",
+                    data: JSON.stringify(formData),
+                    success: function(data) {
+                        console.log(data)
+                        if (data.hasErrors) {
+                            for (const [key, value] of Object.entries(data.errors)) {
+                                $("#" + id).find('[name="' + key + '"]').parent().append("<p class='alert alert-danger mt-2'>" + value + "</p>")
+                            }
+                        } else {
+                            location.reload();
+                        }
+                    },
+                    dataType: 'json',
+                    headers: { 
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json' 
+                    },
+                })
+            }
         </script>
         <style>
             .bg-gray {

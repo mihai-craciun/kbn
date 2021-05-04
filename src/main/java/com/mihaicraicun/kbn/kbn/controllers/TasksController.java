@@ -6,8 +6,6 @@ import java.util.Map;
 import javax.validation.Valid;
 
 import com.mihaicraicun.kbn.kbn.misc.ErrorHandler;
-import com.mihaicraicun.kbn.kbn.model.Project;
-import com.mihaicraicun.kbn.kbn.model.Task;
 import com.mihaicraicun.kbn.kbn.model.requests.TaskCreationRequest;
 import com.mihaicraicun.kbn.kbn.model.responses.TaskCreationResponse;
 import com.mihaicraicun.kbn.kbn.services.ProjectService;
@@ -16,6 +14,7 @@ import com.mihaicraicun.kbn.kbn.services.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,7 +29,7 @@ public class TasksController extends BaseController {
     TaskService taskService;
 
     @PostMapping("")
-    public TaskCreationResponse createTask(@Valid TaskCreationRequest request, BindingResult bindingResult) {
+    public TaskCreationResponse createTask(@Valid @RequestBody TaskCreationRequest request, BindingResult bindingResult) {
         
         TaskCreationResponse response = new TaskCreationResponse();
         response.setHasErrors(false);

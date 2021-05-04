@@ -7,80 +7,128 @@
             <a class="btn btn-warning ml-4 mr-4 mb-3 float-left" th:href="@{/projects/{id}/edit(id=${project.getId()})}">
                 <span class="fas fa-pen"></span> Configure project
             </a>
-            <a class="btn btn-info ml-4 mr-4 mb-3 float-right" th:href="@{/tasks/new?projectId={id}(id=${project.getId()})}">
+            <button class="btn btn-info text-white float-right" data-toggle="modal" data-target="#create-task">
                 <span class="fas fa-plus"></span> Add task
-            </a>
+            </button>
+        </div>
+        <div class="modal fade" id="create-task" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Create a new task</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="form-create-task">
+                            <input type="hidden" name="projectId" th:value="${project.getId()}">
+                            <div class="form-group">
+                                <label for="name">Name</label>
+                                <input type="name" class="form-control" id="name" name="name" placeholder="Create the application">
+                            </div>
+                            <div class="form-group">
+                                <label for="description">Description</label>
+                                <textarea type="password" class="form-control" id="description" name="description" placeholder="Build the application from scratch."></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="story-points">Story Points</label>
+                                <input id="story-points" name="storyPoints" type="number" min="1" class="form-control col-3">
+                            </div>
+                            <label class="mt-1" for="task-type">Task Type</label>
+                            <select id="task-type" name="taskType" class="form-control">
+                                <option value="FEATURE">Feature</option>
+                                <option value="BUG">Bug</option>
+                            </select>
+                            <label class="mt-2" for="priority-type">Task Priority</label>
+                            <select id="priority-type" name="priorityType" class="form-control">
+                                <option value="HIGHEST_PRIORITY">1 - Highest priority</option>
+                                <option value="HIGH_PRIORITY">2 - High priority</option>
+                                <option value="REGULAR_PRIORITY" selected="selected">3 - Regular priority</option>
+                                <option value="LOW_PRIORITY">4 - Low priority</option>
+                                <option value="LOWEST_PRIORITY">5 - Lowest priority</option>
+                            </select>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+                        <a href="javascript:;" onclick="createTaskFromFormId('form-create-task')" class="btn btn-success">Create</a>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="mt-4 px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
             <h1 class="display-4" th:text="${project.getName()}"></h1>
             <p class="lead" th:text="${project.getDescription()}"></p>
         </div>
-        <div class="container col-10 text-center mr-auto d-flex justify-content-center">
-            <div class="row col-md-12">
-                <div class="column col-md-5ths p-1">
-                    <div class="bg-gray rounded fill-height">
-                        <div class="p-3">
-                            <span>To Do</span>
-                        </div>
-                        <div th:each="task : ${project.getTasks()}">
-                            <div th:if="${#strings.equals(task.getState(), 'TO_DO'}" th:insert="fragments/task (task)"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="column col-md-5ths p-1">
-                    <div class="bg-gray rounded fill-height">
-                        <div class="p-3">
-                            <span>In Progress</span>
-                        </div>
-                        <div th:each="task : ${project.getTasks()}">
-                            <div th:if="${#strings.equals(task.getState(), 'IN_PROGRESS'}" th:insert="fragments/task (task)"></div>
+        <div>
+            <div class="container col-10 text-center mr-auto d-flex justify-content-center">
+                <div class="row col-md-12">
+                    <div class="column col-md-5ths p-1">
+                        <div class="bg-gray rounded fill-height">
+                            <div class="p-3">
+                                <span>To Do</span>
+                            </div>
+                            <div th:each="task : ${project.getTasks()}">
+                                <div th:if="${#strings.equals(task.getTaskState(), 'TO_DO')}" th:insert="fragments/task (${task})"></div>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="column col-md-5ths p-1">
-                    <div class="bg-gray rounded fill-height">
-                        <div class="p-3">
-                            <span>In Review</span>
-                        </div>
-                        <div th:each="task : ${project.getTasks()}">
-                            <div th:if="${#strings.equals(task.getState(), 'IN_REVIEW'}" th:insert="fragments/task (task)"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="column col-md-5ths p-1">
-                    <div class="bg-gray rounded fill-height">
-                        <div class="p-3">
-                            <span>In Test</span>
-                        </div>
-                        <div th:each="task : ${project.getTasks()}">
-                            <div th:if="${#strings.equals(task.getState(), 'IN_TEST'}" th:insert="fragments/task (task)"></div>
+                    <div class="column col-md-5ths p-1">
+                        <div class="bg-gray rounded fill-height">
+                            <div class="p-3">
+                                <span>In Progress</span>
+                            </div>
+                            <div th:each="task : ${project.getTasks()}">
+                                <div th:if="${#strings.equals(task.getTaskState(), 'IN_PROGRESS')}" th:insert="fragments/task (${task})"></div>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="column col-md-5ths p-1">
-                    <div class="bg-gray rounded fill-height">
-                        <div class="p-3">
-                            <span>Closed</span>
+                    <div class="column col-md-5ths p-1">
+                        <div class="bg-gray rounded fill-height">
+                            <div class="p-3">
+                                <span>In Review</span>
+                            </div>
+                            <div th:each="task : ${project.getTasks()}">
+                                <div th:if="${#strings.equals(task.getTaskState(), 'IN_REVIEW')}" th:insert="fragments/task (${task})"></div>
+                            </div>
                         </div>
-                         <div th:each="task : ${project.getTasks()}">
-                            <div th:if="${#strings.equals(task.getState(), 'CLOSED'}" th:insert="fragments/task (task)"></div>
+                    </div>
+                    <div class="column col-md-5ths p-1">
+                        <div class="bg-gray rounded fill-height">
+                            <div class="p-3">
+                                <span>In Test</span>
+                            </div>
+                            <div th:each="task : ${project.getTasks()}">
+                                <div th:if="${#strings.equals(task.getTaskState(), 'IN_TEST')}" th:insert="fragments/task (${task})"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column col-md-5ths p-1">
+                        <div class="bg-gray rounded fill-height">
+                            <div class="p-3">
+                                <span>Closed</span>
+                            </div>
+                            <div th:each="task : ${project.getTasks()}">
+                                <div th:if="${#strings.equals(task.getTaskState(), 'CLOSED')}" th:insert="fragments/task (${task})"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col-10 offset-1 p-3 mt-3">
-            <div class="col-12">
-            <div class="bg-gray rounded fill-height">
-                <div class="p-3">
-                    <span>Backlog</span>
-                </div>
-                    <div th:each="task : ${project.getTasks()}">
-                    <div th:if="${#strings.equals(task.getState(), 'BACKLOG'}" th:insert="fragments/task (task)"></div>
+            <div class="col-10 offset-1 p-3 mt-3">
+                <div class="col-12">
+                    <div class="bg-gray rounded fill-height">
+                        <div class="p-3">
+                            <span>Backlog</span>
+                        </div>
+                        <div class="pb-1" th:each="task : ${project.getTasks()}">
+                            <div th:if="${#strings.equals(task.getTaskState(), 'BACKLOG')}" th:insert="fragments/task (${task})"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            </div>
-        </div>
+        <div>
         <footer th:include="fragments/footer"></footer>
     </body>
 </html>

@@ -35,11 +35,12 @@
                     <hr th:if="${iter.index != iter.size-1}"/>
                 </div>
             </div>
-            <input type="submit" class="btn btn-primary mt-3 float-left" value="Update">
+            <input type="submit" class="btn btn-primary float-left mt-3" value="Update">
             </form>
-            <button class="btn btn-danger text-white float-right" data-toggle="modal" data-target="#delete-project">
+            <button class="btn btn-danger text-white float-right mt-3" data-toggle="modal" data-target="#delete-project">
                 <span class="fas fa-times"></span> Delete project
             </button>
+            <br>
             <div class="modal fade" id="delete-project" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
@@ -55,8 +56,8 @@
                         <div class="modal-footer">
                             <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
                             <a href="javascript:;" onclick="document.getElementById('delete-project-form').submit()" class="btn btn-danger">Delete</a>
-                            <form id="'delete-project-form" th:action="@{/projects/{id}(id=${project.getId()})}" th:method="delete" th:hidden="true">
-                                <input hidden type="submit" value="Sign Out"/>
+                            <form id="delete-project-form" th:action="@{/projects/{id}(id=${project.getId()})}" th:method="delete" th:hidden="true">
+                                <input hidden type="submit" value="Delete"/>
                             </form>
                         </div>
                     </div>

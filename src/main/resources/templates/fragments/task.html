@@ -1,14 +1,83 @@
-<div th:fragment="taskCard (task)" draggable="true" class="card mb-2 box-shadow m-1 cursor-pointer">
-    <div class="card-body">
-        <a th:href="@{/tasks/{id}(id=${task.getId()})}" th:text="${task.getName()}"></a>
-        <div>
-            <div class="float-left d-flex">
-                <span th:if="${#strings.equals(task.getTaskType(), 'FEATURE')}" th:insert="fragments/flags :: feature"></span>
-                <span th:if="${#strings.equals(task.getTaskType(), 'BUG')}" th:insert="fragments/flags :: bug"></span>
-                <span th:insert="fragments/flags :: priority(${task.getPriorityType()})"></span>
+<div th:fragment="taskCard (task)">
+    <div th:draggable="${not #strings.equals(task.getTaskState().name, 'BACKLOG')}" class="card mb-2 box-shadow m-1 cursor-pointer">
+        <div class="card-body p-2">
+            <div th:if="not ${#strings.equals(task.getTaskState().name(), 'BACKLOG')}">
+                <a th:text="${#strings.abbreviate(task.getName(), 50)}" data-toggle="modal" th:data-target="'#_' + ${task.getId()}"></a>
+                <br>
+                <small th:text="${#strings.abbreviate(task.getDescription(), 30)}"></small>
+                <div>
+                    <div class="float-left d-flex">
+                        <span th:if="${#strings.equals(task.getTaskType(), 'FEATURE')}" th:insert="fragments/flags :: feature"></span>
+                        <span th:if="${#strings.equals(task.getTaskType(), 'BUG')}" th:insert="fragments/flags :: bug"></span>
+                        <span th:insert="fragments/flags :: priority(${task.getPriorityType()})"></span>
+                    </div>
+                    <div class="float-right">
+                        <span th:insert="fragments/flags :: story_points(${task.getStoryPoints()})"></span>
+                    </div>
+                </div>
             </div>
-            <div class="float-right">
-                <span th:insert="fragments/flags :: story_points(${task.getStoryPoints()})"></span>
+            <div class="row" th:if="${#strings.equals(task.getTaskState().name(), 'BACKLOG')}">
+                <div class="col-2 border-right">
+                    <a th:text="${#strings.abbreviate(task.getName(), 20)}" data-toggle="modal" th:data-target="'#_' + ${task.getId()}"></a>
+                </div>
+                <div class="col-8 border-right">
+                    <small th:text="${#strings.abbreviate(task.getDescription(), 30)}"></small>
+                </div>
+                <div class="col-2">
+                    <div class="float-right">
+                        <span class="float-right" th:if="${#strings.equals(task.getTaskType(), 'FEATURE')}" th:insert="fragments/flags :: feature"></span>
+                        <span class="float-right" th:if="${#strings.equals(task.getTaskType(), 'BUG')}" th:insert="fragments/flags :: bug"></span>
+                        <span class="float-right" th:insert="fragments/flags :: priority(${task.getPriorityType()})"></span>
+                        <span class="float-right" th:insert="fragments/flags :: story_points(${task.getStoryPoints()})"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" th:id="'_'+${task.getId()}" tabindex="-1" role="dialog" th:aria-labelledby="${'exampleModalLabel-' + task.getId()}" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Edit task</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="form-create-task">
+                        <input type="hidden" name="projectId" th:value="${task.getProject().getId()}">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="name" class="form-control" id="name" name="name" placeholder="Create the application" th:value="${task.getName()}">
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Description</label>
+                            <textarea type="password" class="form-control" id="description" name="description" placeholder="Build the application from scratch." th:text="${task.getDescription()}"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="story-points">Story Points</label>
+                            <input id="story-points" name="storyPoints" type="number" min="1" class="form-control col-3" th:value="${task.getStoryPoints()}">
+                        </div>
+                        <label class="mt-1" for="task-type">Task Type</label>
+                        <select id="task-type" name="taskType" class="form-control" th:value="${task.getTaskType().name()}">
+                            <option value="FEATURE" th:selected="${#strings.equals(task.getTaskType().name(), 'FEATURE')}">Feature</option>
+                            <option value="BUG" th:selected="${#strings.equals(task.getTaskType().name(), 'BUG')}">Bug</option>
+                        </select>
+                        <label class="mt-2" for="priority-type">Task Priority</label>
+                        <select id="priority-type" name="priorityType" class="form-control" th:value="${task.getPriorityType().name()}">
+                            <option value="HIGHEST_PRIORITY" th:selected="${#strings.equals(task.getPriorityType().name(), 'HIGHEST_PRIORITY')}">1 - Highest priority</option>
+                            <option value="HIGH_PRIORITY" th:selected="${#strings.equals(task.getPriorityType().name(), 'HIGH_PRIORITY')}">2 - High priority</option>
+                            <option value="REGULAR_PRIORITY" th:selected="${#strings.equals(task.getPriorityType().name(), 'REGULAR_PRIORITY')}">3 - Regular priority</option>
+                            <option value="LOW_PRIORITY" th:selected="${#strings.equals(task.getPriorityType().name(), 'LOW_PRIORITY')}">4 - Low priority</option>
+                            <option value="LOWEST_PRIORITY" th:selected="${#strings.equals(task.getPriorityType().name(), 'LOWEST_PRIORITY')}">5 - Lowest priority</option>
+                        </select>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+                    <a href="javascript:;" onclick="createTaskFromFormId('form-create-task')" class="btn btn-warning">Update</a>
+                    <a href="javascript:;" onclick="createTaskFromFormId('form-create-task')" class="btn btn-danger">Delete</a>
+                </div>
             </div>
         </div>
     </div>

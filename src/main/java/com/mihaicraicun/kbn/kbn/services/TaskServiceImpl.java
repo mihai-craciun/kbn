@@ -44,7 +44,8 @@ public class TaskServiceImpl implements TaskService {
         task.setTaskState(State.TO_DO);
         task.setTaskType(taskCreationRequest.getTaskType());
         task.setProject(projectService.getProjectByIdVisibleByCurrentUser(taskCreationRequest.getProjectId()));
-        return null;
+        save(task);
+        return task;
     }
 
     @Override
